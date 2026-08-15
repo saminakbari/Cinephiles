@@ -4,6 +4,10 @@ import StartPage from "./Pages/StartPage";
 import MoviesPage from "./Pages/MoviesPage";
 import SignupPage from "./Pages/SignupPage";
 import LoginPage from "./Pages/LoginPage";
+import MyAccountPage from "./Pages/MyAccountPage";
+import ProfileView from "./Pages/account/ProfileView";
+import EditProfilePage from "./Pages/account/EditProfilePage";
+import CategoriesPage from "./Pages/account/CategoriesPage";
 import { getSession } from "./utils/auth";
 
 function RequireAuth({ children }) {
@@ -24,6 +28,18 @@ function App() {
           </RequireAuth>
         }
       />
+      <Route
+        path="/account"
+        element={
+          <RequireAuth>
+            <MyAccountPage />
+          </RequireAuth>
+        }
+      >
+        <Route index element={<ProfileView />} />
+        <Route path="edit" element={<EditProfilePage />} />
+        <Route path="categories" element={<CategoriesPage />} />
+      </Route>
     </Routes>
   );
 }

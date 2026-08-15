@@ -1,0 +1,113 @@
+.avatar-menu {
+  position: relative;
+}
+
+.avatar-menu__trigger {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  padding: 0;
+  border: 2px solid var(--accent-red-light);
+  background: var(--accent-red-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: box-shadow 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.avatar-menu__trigger:hover {
+  box-shadow: 0 0 0 4px rgba(67, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+.avatar-menu__trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(67, 0, 0, 0.3);;
+}
+
+.avatar-menu__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.avatar-menu__initial {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-red-light);
+}
+
+.avatar-menu__dropdown {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  right: 0;
+  width: 15rem;
+  background: var(--surface);
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  z-index: 30;
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  transform-origin: top right;
+}
+
+.avatar-menu__dropdown::before {
+  content: '';
+  display: block;
+  height: 0.4rem;
+  background: var(--red);
+}
+
+.avatar-menu__dropdown.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.avatar-menu__greeting {
+  padding: 0.9rem 1.1rem 0.7rem;
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.avatar-menu__greeting span {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.avatar-menu__divider {
+  height: 1px;
+  margin: 0 1.1rem;
+  background: rgba(184, 184, 184, 0.2);
+}
+
+.avatar-menu__item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.85rem 1.1rem;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.avatar-menu__item:hover {
+  background: rgba(253, 188, 7, 0.1);
+  color: var(--gold);
+}
+
+.avatar-menu__item--danger:hover {
+  background: rgba(139, 0, 0, 0.25);
+  color: #ff8a8a;
+}

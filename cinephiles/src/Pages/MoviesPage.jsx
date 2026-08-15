@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './MoviesPage.css'
-import { clearSession, getSession } from '../utils/auth'
+import { clearSession, getCurrentUser } from '../utils/auth'
+import AvatarMenu from '../components/AvatarMenu'
 
 const GENRES = [
   'action-adventure',
@@ -49,7 +50,7 @@ async function enrichWithOmdb(movies) {
 
 export default function MoviesPage() {
   const navigate = useNavigate()
-  const username = getSession()
+  const [user, setUser] = useState(() => getCurrentUser())
   const [movies, setMovies] = useState([])
   const [search, setSearch] = useState('')
   const [genre, setGenre] = useState('')
@@ -119,10 +120,9 @@ export default function MoviesPage() {
     <div className="movies-page">
       <header className="movies-header">
         <div className="movies-header__top">
-          {username && <span className="movies-header__welcome">Hi, {username}</span>}
-          <button type="button" className="movies-logout" onClick={handleLogout}>
-            Log out
-          </button>
+          {user && (
+            <AvatarMenu username={user.username} avatar={user.avatar} onLogout={handleLogout} />
+          )}
         </div>
         <h1>Cinephiles</h1>
         <p>Movies from IMDb across all genres</p>
