@@ -14,44 +14,79 @@ const GENRES = [
   'western',
 ]
 
+const OMDB_URL = 'https://www.omdbapi.com/?apikey=trilogy&i='
+
 function filterMovies(data) {
-  return data.filter((movie) => movie.posterURL && !movie.posterURL.includes('example.com'))
+  return data.filter((movie) => movie.posterURL && !movie.posterURL.includes('example.com') && movie.posterURL !== 'N/A')
+}
+
+async function enrichWithOmdb(movies) {
+  const enriched = []
+  for (let i = 0; i < movies.length; i += 15) {
+    const chunk = movies.slice(i, i + 15)
+    const part = await Promise.all(
+      chunk.map(async (movie) => {
+        try {
+          const res = await fetch(`${OMDB_URL}${movie.imdbId}`)
+          const data = await res.json()
+          if (data.Response !== 'True') return movie
+          return {
+            ...movie,
+            year: Number(String(data.Year).slice(0, 4)) || null,
+            imdbRating: Number(data.imdbRating) || null,
+          }
+        } catch {
+          return movie
+        }
+      }),
+    )
+    enriched.push(...part)
+  }
+  return enriched
 }
 
 export default function MoviesPage() {
   const [movies, setMovies] = useState([])
   const [search, setSearch] = useState('')
+  const [genre, setGenre] = useState('')
+  const [year, setYear] = useState('')
+  const [minScore, setMinScore] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  const filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(search.toLowerCase()),
-  )
+  const filteredMovies = movies.filter((movie) => {
+    const matchesSearch = movie.title.toLowerCase().includes(search.toLowerCase())
+    const matchesGenre = !genre || movie.genre === genre
+    const matchesYear = !year || movie.year === Number(year)
+    const matchesScore = !minScore || (movie.imdbRating != null && movie.imdbRating >= Number(minScore))
+    return matchesSearch && matchesGenre && matchesYear && matchesScore
+  })
 
   useEffect(() => {
     Promise.all(
-      GENRES.map((genre) =>
-        fetch(`https://api.sampleapis.com/movies/${genre}`).then((res) => {
+      GENRES.map((g) =>
+        fetch(`https://api.sampleapis.com/movies/${g}`).then((res) => {
           if (!res.ok) throw new Error('Could not load movies')
-          return res.json()
+          return res.json().then((data) => ({ genre: g, data }))
         }),
       ),
     )
-      .then((results) => {
+      .then(async (results) => {
         const seen = new Set()
         const combined = []
 
-        for (const list of results) {
-          for (const movie of filterMovies(list)) {
+        for (const { genre: g, data } of results) {
+          for (const movie of filterMovies(data)) {
             if (!seen.has(movie.imdbId)) {
               seen.add(movie.imdbId)
-              combined.push(movie)
+              combined.push({ ...movie, genre: g })
             }
           }
         }
 
         setMovies(combined)
         setLoading(false)
+        setMovies(await enrichWithOmdb(combined))
       })
       .catch((err) => {
         setError(err.message)
@@ -65,13 +100,40 @@ export default function MoviesPage() {
         <h1>Cinephiles</h1>
         <p>Movies from IMDb across all genres</p>
         {!loading && !error && (
-          <input
-            className="movie-search"
-            type="search"
-            placeholder="Search by title…"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <>
+            <input
+              className="movie-search"
+              type="search"
+              placeholder="Search by title…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <div className="movie-filters">
+              <select value={genre} onChange={(e) => setGenre(e.target.value)}>
+                <option value="">All genres</option>
+                {GENRES.map((g) => (
+                  <option key={g} value={g}>
+                    {g}
+                  </option>
+                ))}
+              </select>
+              <input
+                type="number"
+                placeholder="Year"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+              />
+              <input
+                type="number"
+                placeholder="Min IMDb score"
+                min="0"
+                max="10"
+                step="0.1"
+                value={minScore}
+                onChange={(e) => setMinScore(e.target.value)}
+              />
+            </div>
+          </>
         )}
       </header>
 
@@ -79,7 +141,7 @@ export default function MoviesPage() {
       {error && <p className="movies-status movies-error">{error}</p>}
 
       {!loading && !error && filteredMovies.length === 0 && (
-        <p className="movies-status">No movies found for &quot;{search}&quot;</p>
+        <p className="movies-status">No movies found</p>
       )}
 
       {!loading && !error && filteredMovies.length > 0 && (
