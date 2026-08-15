@@ -1,0 +1,11 @@
+{
+  "name": "cinephiles-root",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix cinephiles",
+    "build": "npm run build --prefix cinephiles",
+    "lint": "npm run lint --prefix cinephiles",
+    "preview": "npm run preview --prefix cinephiles",
+    "install:app": "npm install --prefix cinephiles"
+  }
+}
