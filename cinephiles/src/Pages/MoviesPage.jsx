@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './MoviesPage.css'
+import { clearSession, getSession } from '../utils/auth'
 
 const GENRES = [
   'action-adventure',
@@ -46,6 +48,8 @@ async function enrichWithOmdb(movies) {
 }
 
 export default function MoviesPage() {
+  const navigate = useNavigate()
+  const username = getSession()
   const [movies, setMovies] = useState([])
   const [search, setSearch] = useState('')
   const [genre, setGenre] = useState('')
@@ -106,9 +110,20 @@ export default function MoviesPage() {
       })
   }, [])
 
+  function handleLogout() {
+    clearSession()
+    navigate('/')
+  }
+
   return (
     <div className="movies-page">
       <header className="movies-header">
+        <div className="movies-header__top">
+          {username && <span className="movies-header__welcome">Hi, {username}</span>}
+          <button type="button" className="movies-logout" onClick={handleLogout}>
+            Log out
+          </button>
+        </div>
         <h1>Cinephiles</h1>
         <p>Movies from IMDb across all genres</p>
         {!loading && !error && (
@@ -158,9 +173,12 @@ export default function MoviesPage() {
               </div>
               <input
                 type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                maxLength={4}
                 placeholder="Year"
                 value={year}
-                onChange={(e) => setYear(e.target.value)}
+                onChange={(e) => setYear(e.target.value.replace(/\D/g, ''))}
               />
               <input
                 type="number"

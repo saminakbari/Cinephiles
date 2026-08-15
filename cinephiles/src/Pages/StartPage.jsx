@@ -61,15 +61,16 @@ const FEATURES = [
 
 export default function CinephilesLanding() {
   const navigate = useNavigate();
-  const goToMovies = () => navigate("/movies");
+  const goToSignup = () => navigate("/signup");
+  const goToLogin = () => navigate("/login");
 
   return (
     <div className="page" dir="ltr" lang="en">
       <nav className="navbar">
         <Logo />
         <div className="navbar__actions">
-          <Button variant="ghost" onClick={goToMovies}>Log in</Button>
-          <Button variant="primary">Sign up</Button>
+          <Button variant="ghost" onClick={goToLogin}>Log in</Button>
+          <Button variant="primary" onClick={goToSignup}>Sign up</Button>
         </div>
       </nav>
 

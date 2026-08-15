@@ -10,6 +10,37 @@
   border-bottom: 2px solid var(--red);
 }
 
+.movies-header__top {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.movies-header__welcome {
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.movies-logout {
+  padding: 0.6rem 1.3rem;
+  border-radius: 6px;
+  border: 1px solid rgba(184, 184, 184, 0.35);
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+
+.movies-logout:hover {
+  border-color: #8B0000;
+  color: #F5F5F0;
+  background: #8B0000;
+}
+
 .movies-header h1 {
   color: var(--gold);
   margin: 0 0 0.6rem;
@@ -129,7 +160,7 @@
   color: var(--text);
   cursor: pointer;
   text-transform: capitalize;
-  font-size: 1rem;
+  font-size: 1.05rem;
 }
 
 .custom-select-option:hover {
