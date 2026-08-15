@@ -1,34 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Sacramento&display=swap');
-
-:root {
-  --bg: #1A1A1A;
-  --surface: #242424;
-  --text-primary: #F5F5F0;
-  --text-secondary: #c6c6c6;
-  --accent-red: #8B0000;
-  --accent-gold: #FDBC07;
-  --accent-gold-dark: #2A1B00;
-  --radius: 0.625rem;
-  --container-width: 100rem;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
 .page {
   background: var(--bg);
   min-height: 100vh;
   font-family: 'Inter', 'Helvetica Neue', sans-serif;
   color: var(--text-primary);
-  background-image:
-    linear-gradient(rgba(184, 184, 184, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(184, 184, 184, 0.04) 1px, transparent 1px);
-  background-size: 1.5rem 1.5rem;
 }

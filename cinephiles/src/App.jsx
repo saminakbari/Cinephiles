@@ -1,14 +1,15 @@
-import { useState } from 'react'
-import './App.css'
-import StartPage from './Pages/StartPage'
-import MoviesPage from './MoviesPage'
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
+import StartPage from "./Pages/StartPage";
+import MoviesPage from "./Pages/MoviesPage";
 
 function App() {
-
   return (
-    <StartPage/>
-  )
-  return <MoviesPage />
+    <Routes>
+      <Route path="/" element={<StartPage />} />
+      <Route path="/movies" element={<MoviesPage />} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;

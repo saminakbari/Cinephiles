@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./StartPage.css";
 import LOGO from "../assets/logo.svg";
 import CAMERA from "../assets/camera.svg";
@@ -41,11 +42,15 @@ function FilmstripFrame({ children }) {
   );
 }
 
-function Button({ children, variant = "primary", size = "md" }) {
+function Button({ children, variant = "primary", size = "md", onClick }) {
   const classNames = ["btn", `btn--${variant}`, size === "lg" ? "btn--lg" : ""]
     .filter(Boolean)
     .join(" ");
-  return <button className={classNames}>{children}</button>;
+  return (
+    <button className={classNames} onClick={onClick}>
+      {children}
+    </button>
+  );
 }
 
 const FEATURES = [
@@ -55,12 +60,15 @@ const FEATURES = [
 ];
 
 export default function CinephilesLanding() {
+  const navigate = useNavigate();
+  const goToMovies = () => navigate("/movies");
+
   return (
     <div className="page" dir="ltr" lang="en">
       <nav className="navbar">
         <Logo />
         <div className="navbar__actions">
-          <Button variant="ghost">Log in</Button>
+          <Button variant="ghost" onClick={goToMovies}>Log in</Button>
           <Button variant="primary">Sign up</Button>
         </div>
       </nav>

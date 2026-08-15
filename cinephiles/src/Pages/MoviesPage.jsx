@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './MoviesPage.css'
 
 const GENRES = [
@@ -53,6 +53,18 @@ export default function MoviesPage() {
   const [minScore, setMinScore] = useState('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [genreOpen, setGenreOpen] = useState(false)
+  const genreRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (genreRef.current && !genreRef.current.contains(e.target)) {
+        setGenreOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const filteredMovies = movies.filter((movie) => {
     const matchesSearch = movie.title.toLowerCase().includes(search.toLowerCase())
@@ -109,16 +121,43 @@ export default function MoviesPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
             <div className="movie-filters">
-              <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-                <option value="">All genres</option>
-                {GENRES.map((g) => (
-                  <option key={g} value={g}>
-                    {g}
-                  </option>
-                ))}
-              </select>
+              <div className="custom-select" ref={genreRef}>
+                <button
+                  type="button"
+                  className="custom-select-trigger"
+                  onClick={() => setGenreOpen((open) => !open)}
+                >
+                  {genre || 'All genres'}
+                  <span className={`custom-select-arrow ${genreOpen ? 'open' : ''}`}>▾</span>
+                </button>
+                {genreOpen && (
+                  <ul className="custom-select-list">
+                    <li
+                      className={`custom-select-option ${genre === '' ? 'selected' : ''}`}
+                      onClick={() => {
+                        setGenre('')
+                        setGenreOpen(false)
+                      }}
+                    >
+                      All genres
+                    </li>
+                    {GENRES.map((g) => (
+                      <li
+                        key={g}
+                        className={`custom-select-option ${genre === g ? 'selected' : ''}`}
+                        onClick={() => {
+                          setGenre(g)
+                          setGenreOpen(false)
+                        }}
+                      >
+                        {g}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
               <input
-                type="number"
+                type="text"
                 placeholder="Year"
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
