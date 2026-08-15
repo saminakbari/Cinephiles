@@ -1,12 +1,7 @@
-import { useState } from 'react'
-import './App.css'
+import MoviesPage from './MoviesPage'
 
 function App() {
-
-  return (
-    <>
-    </>
-  )
+  return <MoviesPage />
 }
 
 export default App
