@@ -14,6 +14,38 @@
 - الینا هژبری – 401170661
 - ثمین اکبری – 401105594
 
+## ساختار پروژه
+
+## استقرار روی github actions
+
+## شاخه‌ها
+پروژه به صورت branch-based توسعه یافته است؛ به این صورت که برای هر صفحه یک branch جداگانه در نظر گرفته شده است.
+- شاخه main-page: صفحه اولیه سایت
+-  شاخه movies-list: صفحه اصلی شامل فیلم‌ها، نوار جستجو و فیلترها
+  - شاخه movies-detail: صفحه توضیحات فیلم، شامل نام، عکس، توضیحات، کارگردان و امتیاز فیلم
+  - شاخه rate-and-review: بخش امتیازدهی و نظرات در صفحه توضیحات فیلم
+  - شاخه categories-page: صفحه دسته‌بندی‌ها
+شاخه main نیز توسط محدودیت‌ branch protection محافظت می‌شود و تنها از طریق pull request، تغییرات به آن منتقل می‌شود.
+
+## استفاده از commitهای معنادار
+در این پروژه سعی شده است commitها معنادار باشند یعنی در هر commit تغییر مشخص و معنادار صورت گرفته است.
+به طور مثال:
+- add authetication
+- add start page
+- add movie page
+- add search
+- add filter
+- change some style in movie page
+- add profile pages (edit, delete profile)
+- add movie detail page
+- add rate and review
+- add categories page
+
+## مشکلات merge conflicts
+در این پروژه ما با دو تا merge conflict برخورد کردیم:
+1. هنگام merge کردن main page با شاخه main یک سری تغییرات از سوی شاخه movie page بر روی app.jsx و index.css اعمال شدهد بود که با تغییرات شاخه main page در تضاد بود.
+2. هنگام merge کردن movie list با شاخه main یک سری تغییرات روی app.jsx و moviepage.jsx اعمال شده بود که در تضاد با commitهای این شاخه بود. 
+
 ## سوالات
 
 ### پرسش اول
@@ -192,6 +224,7 @@ git clone https://github.com/saminakbari/Cinephiles.git
   - دستورات گیت: `git init`، `git config`، `git status`، `git branch`، `git add`، `git log`، `git commit`، `git diff`، `git pull`، `git reset`، `git push`، `git checkout`
   - دستورات stash: `save`، `show`، `list`، `apply`، `drop`، `pop`
 - من یه سری تغییرات دادم تو یه برنچی. بعد push‌اش کردم با vscode مشکلی نبود. الان میرم تو گیت‌هاب میگه نمی‌تونه merge کنه. باید چه دستوری بزنم؟
+- من الان یه سری تغییرات دادم اما حواسم نبود رو برنچ main بودم. تغییرات رو هنوز add و commit نکردم. چجوری میتونم این تغییرات رو ببرم تو یه برنچ دیگه و اونجا Add و commit کنم؟
 
 ## نمونه دستورات گیت
 
@@ -202,9 +235,13 @@ git clone https://github.com/saminakbari/Cinephiles.git
 ```bash
 git branch
 git checkout
+git checkout -b
 git pull origin main
 git merge
 git pull
 git commit -m
 git push --set-upstream origin
+git stash push -m
+git stash list
+git stash pop
 ```
