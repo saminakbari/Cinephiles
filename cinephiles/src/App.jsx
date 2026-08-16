@@ -30,7 +30,7 @@ function App() {
         }
       />
       <Route
-        path="/movies/:imdbId"
+        path="/movie/:imdbId"
         element={
           <RequireAuth>
             <MovieDetail />

@@ -1,0 +1,51 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: cinephiles/package-lock.json
+
+      - name: Install dependencies
+        working-directory: cinephiles
+        run: npm ci
+
+      - name: Build
+        working-directory: cinephiles
+        run: npm run build
+
+      # GitHub Pages has no server rewrite; 404.html lets client routes reload.
+      - name: SPA fallback
+        run: |
+          cp cinephiles/dist/index.html cinephiles/dist/404.html
+          touch cinephiles/dist/.nojekyll
+
+      # Publish into /docs on main so Pages can use: branch main → folder /docs
+      - name: Deploy to docs folder
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: cinephiles/dist
+          publish_branch: main
+          destination_dir: docs
+          enable_jekyll: false

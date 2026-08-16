@@ -62,6 +62,10 @@ export default function MoviesPage() {
   const genreRef = useRef(null)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
     function handleClickOutside(e) {
       if (genreRef.current && !genreRef.current.contains(e.target)) {
         setGenreOpen(false)
@@ -72,7 +76,7 @@ export default function MoviesPage() {
   }, [])
 
   const filteredMovies = movies.filter((movie) => {
-    const matchesSearch = movie.title.toLowerCase().includes(search.toLowerCase())
+    const matchesSearch = (movie.title || '').toLowerCase().includes(search.toLowerCase())
     const matchesGenre = !genre || movie.genre === genre
     const matchesYear = !year || movie.year === Number(year)
     const matchesScore = !minScore || (movie.imdbRating != null && movie.imdbRating >= Number(minScore))
@@ -205,7 +209,7 @@ export default function MoviesPage() {
         <ul className="movie-list">
           {filteredMovies.map((movie) => (
             <li key={movie.imdbId} className="movie-card">
-              <Link to={`/movies/${movie.imdbId}`}>
+              <Link to={`/movie/${movie.imdbId}`}>
                 <img
                   src={movie.posterURL}
                   alt={movie.title}
