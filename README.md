@@ -160,6 +160,7 @@ stage یا index ناحیه میانی بین working directory و مخزن گی
 <tr><td>ارتباط</td><td>اتصال به یک remote با دستور <code>git remote add</code></td><td>همگام‌سازی با git <code>push</code> / <code>pull</code> / <code>fetch</code></td></tr>
 </table>
 
+
 <h2 dir="rtl" align="right">نمونه پرامپت‌های هوش مصنوعی</h2>
 
 <p dir="rtl" align="right">پرامپت‌هایی که استفاده کردیم شامل سه دسته می‌شوند:</p>
