@@ -4,6 +4,8 @@
 
 پروژه «Cinephiles» یک اپلیکیشن وب شخصی‌ساز برای عاشقان فیلم است که تجربه‌ای نوستالژیک و در عین حال مدرن از مدیریت کتابخانه فیلم‌های مورد علاقه شما ارائه می‌دهد. این برنامه با بهره‌گیری از API معتبر IMDB امکان جستجوی دقیق فیلم‌ها بر اساس عنوان و نمایش اطلاعات جامعی همچون سال انتشار، ژانر، خلاصه داستان، پوستر و کارگردان را فراهم می‌کند. کاربران می‌توانند فیلم‌های محبوب خود را در دسته‌بندی‌های شخصی ذخیره کرده، به هر فیلم امتیاز ستاره‌ای (۱ تا ۵) داده و نظرات خود را ثبت یا ویرایش نمایند. سیستم مدیریت دسته‌بندی‌ها امکان ایجاد، ویرایش و حذف لیست‌های دلخواه را داده و فیلم‌های هر دسته را بر اساس امتیاز داده شده توسط کاربر مرتب می‌سازد. تمامی داده‌های کاربر شامل لیست‌ها، امتیازها و نظرات به‌صورت امن در LocalStorage مرورگر ذخیره می‌شوند و با صفحه‌بندی روان، کاربران به‌راحتی میان صفحه اصلی، صفحه جزئیات فیلم و کتابخانه شخصی خود جابه‌جا می‌شوند. طراحی رابط کاربری با تم دارک و پالت رنگی گرم فضای سالن‌های سینمای کلاسیک را تداعی کرده و تجربه‌ای بصری، شهودی و بدون دغدغه را برای کاربران به ارمغان می‌آورد.
 
+**دمو زنده:** [saminakbari.github.io/Cinephiles](https://saminakbari.github.io/Cinephiles)
+
 ## معرفی
 
 آزمایشگاه مهندسی نرم‌افزار
@@ -14,9 +16,73 @@
 - الینا هژبری – 401170661
 - ثمین اکبری – 401105594
 
+## 🛠️ تکنولوژی‌ها
+ 
+- [React 19](https://react.dev/)
+- [Vite](https://vite.dev/)
+- [React Router](https://reactrouter.com/)
+- ESLint
+  
 ## ساختار پروژه
+ 
+```
+cinephiles/
+├── public/                       # فایل‌های استاتیک عمومی
+├── src/
+│   ├── assets/                   # آیکون‌ها و تصاویر (logo.svg, camera.svg)
+│   ├── components/                # کامپوننت‌های قابل استفاده مجدد
+│   │   ├── AvatarMenu.jsx
+│   │   ├── SaveToCategory.jsx
+│   │   └── icons.jsx
+│   ├── Pages/                     # صفحات اصلی برنامه
+│   │   ├── account/                # صفحات مربوط به حساب کاربری
+│   │   │   ├── CategoriesPage.jsx
+│   │   │   ├── ProfileView.jsx
+│   │   │   └── EditProfilePage.jsx
+│   │   ├── StartPage.jsx
+│   │   ├── LoginPage.jsx
+│   │   ├── SignupPage.jsx
+│   │   ├── MoviesPage.jsx
+│   │   ├── MovieDetail.jsx
+│   │   └── MyAccountPage.jsx
+│   ├── utils/                      # توابع کمکی (auth, categories, reviews)
+│   ├── App.jsx                     # کامپوننت اصلی و روتینگ
+│   ├── main.jsx                    # نقطه ورود برنامه (Entry point)
+│   └── index.css
+├── index.html
+├── vite.config.js                  # تنظیمات Vite (base path برای GitHub Pages)
+├── package.json
+└── package-lock.json
+```
+ 
+پروژه‌ی اصلی داخل پوشه‌ی `cinephiles/` در روت ریپازیتوری قرار دارد.
+ 
+## توسعه‌ی محلی
+ 
+```bash
+cd cinephiles
+npm ci
+npm run dev
+```
+ 
+بیلد پروداکشن:
+ 
+```bash
+npm run build
+```
 
 ## استقرار روی github actions
+
+این پروژه با یک ورک‌فلوی سفارشی (`.github/workflows/deploy.yml`) روی GitHub Pages دیپلوی می‌شود:
+ 
+1. با هر `push` به شاخه‌ی `main` (یا اجرای دستی از طریق `workflow_dispatch`) ورک‌فلو استارت می‌شود.
+2. کد چک‌اوت شده و Node.js نسخه‌ی ۲۲ با کش `npm` ست‌آپ می‌شود.
+3. وابستگی‌ها با `npm ci` نصب و پروژه با `npm run build` بیلد می‌شود (خروجی در `cinephiles/dist/`).
+4. برای پشتیبانی از مسیرهای SPA (React Router)، فایل `index.html` به‌عنوان `404.html` کپی می‌شود تا رفرش صفحات داخلی خطا ندهد، و فایل `.nojekyll` هم اضافه می‌شود تا GitHub Pages پردازش Jekyll را روی خروجی انجام ندهد.
+5. خروجی بیلد به‌عنوان یک Pages artifact آپلود می‌شود (`actions/upload-pages-artifact`).
+6. در یک job جدا (`deploy`)، همان artifact مستقیماً روی محیط `github-pages` منتشر می‌شود (`actions/deploy-pages`).
+    
+می‌توانید وضعیت اجرای هر بیلد را در تب [Actions](../../actions) مشاهده کنید.
 
 ## شاخه‌ها
 پروژه به صورت branch-based توسعه یافته است؛ به این صورت که برای هر صفحه یک branch جداگانه در نظر گرفته شده است.
@@ -25,6 +91,7 @@
   - شاخه movies-detail: صفحه توضیحات فیلم، شامل نام، عکس، توضیحات، کارگردان و امتیاز فیلم
   - شاخه rate-and-review: بخش امتیازدهی و نظرات در صفحه توضیحات فیلم
   - شاخه categories-page: صفحه دسته‌بندی‌ها
+
 شاخه main نیز توسط محدودیت‌ branch protection محافظت می‌شود و تنها از طریق pull request، تغییرات به آن منتقل می‌شود.
 
 ## استفاده از commitهای معنادار
@@ -225,6 +292,19 @@ git clone https://github.com/saminakbari/Cinephiles.git
   - دستورات stash: `save`، `show`، `list`، `apply`، `drop`، `pop`
 - من یه سری تغییرات دادم تو یه برنچی. بعد push‌اش کردم با vscode مشکلی نبود. الان میرم تو گیت‌هاب میگه نمی‌تونه merge کنه. باید چه دستوری بزنم؟
 - من الان یه سری تغییرات دادم اما حواسم نبود رو برنچ main بودم. تغییرات رو هنوز add و commit نکردم. چجوری میتونم این تغییرات رو ببرم تو یه برنچ دیگه و اونجا Add و commit کنم؟
+
+**پرامپت‌هایی که برای github action زدیم؛ مانند:**
+
+- now i want to deploy this project on github using github actions. i want it to deploy new changes whenever a new commit is pushed to main branch. implement anything needed and tell me exactly what to do.
+- موقع deploy با این خطا مواجه می‌شویم. مشکل چیست و چگونه آن را حل کنم؟
+Run peaceiris/actions-gh-pages@v4
+[INFO] Usage https://github.com/peaceiris/actions-gh-pages#readme
+Dump inputs
+Setup auth token
+[INFO] setup GITHUB_TOKEN
+Error: Action failed with "You deploy from main to main
+This operation is prohibited to protect your contents
+"
 
 ## نمونه دستورات گیت
 
