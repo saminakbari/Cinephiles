@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import './MovieDetail.css'
 import { getCurrentUser } from '../utils/auth'
 import { getReview, saveReview } from '../utils/reviews'
@@ -114,9 +114,9 @@ export default function MovieDetail() {
       {error && (
         <div className="detail-status-wrap">
           <p className="detail-status detail-error">{error}</p>
-          <Link to="/movies" className="back-btn">
+          <a href="/movies" className="back-btn">
             <BackArrowIcon className="back-btn__icon" /> Back to movies
-          </Link>
+          </a>
         </div>
       )}
 
@@ -134,9 +134,9 @@ export default function MovieDetail() {
               <div className="detail-hero__scrim" aria-hidden="true" />
             </div>
 
-            <Link to="/movies" className="back-btn back-btn--floating">
+            <a href="/movies" className="back-btn back-btn--floating">
               <BackArrowIcon className="back-btn__icon" /> Back to movies
-            </Link>
+            </a>
 
             <div className="detail-hero__content">
               <div className="detail-poster-frame">

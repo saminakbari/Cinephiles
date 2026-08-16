@@ -177,7 +177,7 @@ export default function CategoriesPage() {
               >
                 <CloseIcon />
               </button>
-              <Link to={`/movies/${movie.imdbId}`}>
+              <Link to={`/movie/${movie.imdbId}`}>
                 {movie.poster ? (
                   <img src={movie.poster} alt={movie.title} loading="lazy" referrerPolicy="no-referrer" />
                 ) : (
