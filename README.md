@@ -58,12 +58,13 @@ cinephiles/
 پروژه‌ی اصلی داخل پوشه‌ی `cinephiles/` در روت ریپازیتوری قرار دارد.
  
 ## توسعه‌ی محلی
- 
+ <div dir="ltr" align="left">
 ```bash
 cd cinephiles
 npm ci
 npm run dev
 ```
+ </div>
  
 بیلد پروداکشن:
  
@@ -97,6 +98,7 @@ npm run build
 ## استفاده از commitهای معنادار
 در این پروژه سعی شده است commitها معنادار باشند یعنی در هر commit تغییر مشخص و معنادار صورت گرفته است.
 به طور مثال:
+<div dir="ltr" align="left">
 - add authetication
 - add start page
 - add movie page
@@ -107,6 +109,7 @@ npm run build
 - add movie detail page
 - add rate and review
 - add categories page
+</div>
 
 ## مشکلات merge conflicts
 در این پروژه ما با دو تا merge conflict برخورد کردیم:
@@ -295,8 +298,11 @@ git clone https://github.com/saminakbari/Cinephiles.git
 
 **پرامپت‌هایی که برای github action زدیم؛ مانند:**
 
+<div dir="ltr" align="left">
 - now i want to deploy this project on github using github actions. i want it to deploy new changes whenever a new commit is pushed to main branch. implement anything needed and tell me exactly what to do.
+</div>
 - موقع deploy با این خطا مواجه می‌شویم. مشکل چیست و چگونه آن را حل کنم؟
+<div dir="ltr" align="left">
 Run peaceiris/actions-gh-pages@v4
 [INFO] Usage https://github.com/peaceiris/actions-gh-pages#readme
 Dump inputs
@@ -305,6 +311,7 @@ Setup auth token
 Error: Action failed with "You deploy from main to main
 This operation is prohibited to protect your contents
 "
+</div>
 
 ## نمونه دستورات گیت
 
