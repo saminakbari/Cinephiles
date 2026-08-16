@@ -6,14 +6,16 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,21 +36,27 @@ jobs:
         working-directory: cinephiles
         run: npm run build
 
+      # GitHub Pages has no server rewrite; 404.html lets client routes reload.
       - name: SPA fallback
         run: |
           cp cinephiles/dist/index.html cinephiles/dist/404.html
           touch cinephiles/dist/.nojekyll
 
-      - name: Sync build into docs/
-        run: |
-          rm -rf docs
-          mkdir docs
-          cp -r cinephiles/dist/. docs/
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
-      - name: Commit and push docs/
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs
-          git diff --staged --quiet || git commit -m "chore: update docs from build [skip ci]"
-          git push
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: cinephiles/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
