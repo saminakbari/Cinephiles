@@ -34,18 +34,21 @@ jobs:
         working-directory: cinephiles
         run: npm run build
 
-      # GitHub Pages has no server rewrite; 404.html lets client routes reload.
       - name: SPA fallback
         run: |
           cp cinephiles/dist/index.html cinephiles/dist/404.html
           touch cinephiles/dist/.nojekyll
 
-      # Publish into /docs on main so Pages can use: branch main → folder /docs
-      - name: Deploy to docs folder
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: cinephiles/dist
-          publish_branch: main
-          destination_dir: docs
-          enable_jekyll: false
+      - name: Sync build into docs/
+        run: |
+          rm -rf docs
+          mkdir docs
+          cp -r cinephiles/dist/. docs/
+
+      - name: Commit and push docs/
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs
+          git diff --staged --quiet || git commit -m "chore: update docs from build [skip ci]"
+          git push
