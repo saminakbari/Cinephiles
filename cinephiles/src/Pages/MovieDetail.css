@@ -89,3 +89,105 @@
   color: var(--text);
   border-color: var(--text);
 }
+
+.review-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(184, 184, 184, 0.25);
+}
+
+.review-section h2 {
+  color: var(--gold);
+  font-size: 1.25rem;
+  margin: 0 0 1rem;
+}
+
+.star-row {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.star,
+.star-btn {
+  font-size: 1.75rem;
+  line-height: 1;
+  color: rgba(184, 184, 184, 0.4);
+}
+
+.star.filled,
+.star-btn.filled {
+  color: var(--gold);
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.star-btn:hover {
+  color: var(--gold);
+}
+
+.review-textarea {
+  width: 100%;
+  max-width: 480px;
+  padding: 0.75rem;
+  border: 1px solid rgba(184, 184, 184, 0.35);
+  border-radius: 6px;
+  background: rgba(184, 184, 184, 0.08);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+  display: block;
+  margin-bottom: 0.85rem;
+}
+
+.review-textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.review-comment {
+  color: var(--muted);
+  margin: 0 0 0.85rem !important;
+  max-width: 480px;
+  white-space: pre-wrap;
+}
+
+.review-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.review-btn {
+  background: var(--red);
+  border: 1px solid var(--red);
+  color: var(--text);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.review-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.review-btn:not(:disabled):hover {
+  border-color: var(--gold);
+}
+
+.review-btn--ghost {
+  background: transparent;
+  border-color: rgba(184, 184, 184, 0.35);
+}
+
+.review-saved {
+  color: var(--gold);
+  margin: 0.75rem 0 0 !important;
+  font-size: 0.9rem;
+}
