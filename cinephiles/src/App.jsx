@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import StartPage from "./Pages/StartPage";
 import MoviesPage from "./Pages/MoviesPage";
+import MovieDetail from "./Pages/MovieDetail";
 import SignupPage from "./Pages/SignupPage";
 import LoginPage from "./Pages/LoginPage";
 import MyAccountPage from "./Pages/MyAccountPage";
@@ -25,6 +26,14 @@ function App() {
         element={
           <RequireAuth>
             <MoviesPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="/movies/:imdbId"
+        element={
+          <RequireAuth>
+            <MovieDetail />
           </RequireAuth>
         }
       />

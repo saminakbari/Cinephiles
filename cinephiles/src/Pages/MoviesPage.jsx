@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import './MoviesPage.css'
 import { clearSession, getCurrentUser } from '../utils/auth'
 import AvatarMenu from '../components/AvatarMenu'
@@ -205,11 +205,7 @@ export default function MoviesPage() {
         <ul className="movie-list">
           {filteredMovies.map((movie) => (
             <li key={movie.imdbId} className="movie-card">
-              <a
-                href={`https://www.imdb.com/title/${movie.imdbId}/`}
-                target="_blank"
-                rel="noreferrer"
-              >
+              <Link to={`/movies/${movie.imdbId}`}>
                 <img
                   src={movie.posterURL}
                   alt={movie.title}
@@ -217,7 +213,7 @@ export default function MoviesPage() {
                   referrerPolicy="no-referrer"
                 />
                 <h2>{movie.title}</h2>
-              </a>
+              </Link>
             </li>
           ))}
         </ul>

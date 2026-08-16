@@ -1,0 +1,91 @@
+.movie-detail {
+  padding: 2rem 1.5rem 3rem;
+  text-align: left;
+}
+
+.back-btn {
+  background: transparent;
+  border: 1px solid rgba(184, 184, 184, 0.35);
+  color: var(--text);
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.back-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.detail-status {
+  text-align: center;
+  color: var(--muted);
+}
+
+.detail-error {
+  color: var(--gold);
+}
+
+.detail-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.detail-poster {
+  width: 260px;
+  max-width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 8px;
+  background: rgba(184, 184, 184, 0.15);
+  border: 1px solid rgba(184, 184, 184, 0.2);
+}
+
+.detail-info {
+  flex: 1;
+  min-width: 240px;
+}
+
+.detail-info h1 {
+  color: var(--gold);
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+.detail-meta {
+  color: var(--muted);
+  margin: 0 0 0.5rem;
+}
+
+.detail-rating {
+  color: var(--gold);
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.detail-info p {
+  margin: 0 0 0.65rem;
+  line-height: 1.45;
+}
+
+.detail-plot {
+  color: var(--muted);
+  margin-top: 1rem !important;
+}
+
+.imdb-link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--gold);
+  text-decoration: none;
+  border-bottom: 1px solid var(--gold);
+}
+
+.imdb-link:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
