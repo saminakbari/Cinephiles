@@ -16,12 +16,14 @@
 - الینا هژبری – 401170661
 - ثمین اکبری – 401105594
 
-## 🛠️ تکنولوژی‌ها
+## تکنولوژی‌ها
  
-- [React 19](https://react.dev/)
-- [Vite](https://vite.dev/)
-- [React Router](https://reactrouter.com/)
-- ESLint
+<ul dir="rtl">
+  <li><a href="https://react.dev/">React 19</a></li>
+  <li><a href="https://vite.dev/">Vite</a></li>
+  <li><a href="https://reactrouter.com/">React Router</a></li>
+  <li>ESLint</li>
+</ul>
   
 ## ساختار پروژه
  
@@ -58,13 +60,11 @@ cinephiles/
 پروژه‌ی اصلی داخل پوشه‌ی `cinephiles/` در روت ریپازیتوری قرار دارد.
  
 ## توسعه‌ی محلی
- <div dir="ltr" align="left">
 ```bash
 cd cinephiles
 npm ci
 npm run dev
 ```
- </div>
  
 بیلد پروداکشن:
  
@@ -98,18 +98,18 @@ npm run build
 ## استفاده از commitهای معنادار
 در این پروژه سعی شده است commitها معنادار باشند یعنی در هر commit تغییر مشخص و معنادار صورت گرفته است.
 به طور مثال:
-<div dir="ltr" align="left">
-- add authetication
-- add start page
-- add movie page
-- add search
-- add filter
-- change some style in movie page
-- add profile pages (edit, delete profile)
-- add movie detail page
-- add rate and review
-- add categories page
-</div>
+<ul dir="rtl">
+  <li>add authentication</li>
+  <li>add start page</li>
+  <li>add movie page</li>
+  <li>add search</li>
+  <li>add filter</li>
+  <li>change some style in movie page</li>
+  <li>add profile pages (edit, delete profile)</li>
+  <li>add movie detail page</li>
+  <li>add rate and review</li>
+  <li>add categories page</li>
+</ul>
 
 ## مشکلات merge conflicts
 در این پروژه ما با دو تا merge conflict برخورد کردیم:
@@ -218,7 +218,7 @@ git clone https://github.com/saminakbari/Cinephiles.git
 در گیت به جای آنکه بگوید چه خط‌هایی از فایل تغییر کرد (مبتنی بر diff)، در هر لحظه یک تصویر کامل از تمام فایل‌ها و پوشه‌های پروژه می‌گیرد.
 
 > اگر فایلی بین دو commit تغییر نکرده باشد، گیت به جای کپی‌کردن دوباره، فقط یک اشاره‌گر به همان blob قبلی نگه می‌دارد. بنابراین با وجود اینکه هر commit تمام پروژه را نمایندگی می‌کند، از نظر فضای ذخیره‌سازی بسیار بهینه است.
->
+
 > این مبتنی بر snapshot بودن باعث می‌شود عملیاتی مانند merge و branch سریع‌تر و سبک‌تر باشند.
 
 **ارتباط آن با commit چیست؟**
