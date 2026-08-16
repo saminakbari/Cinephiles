@@ -47,7 +47,8 @@ function App() {
       >
         <Route index element={<ProfileView />} />
         <Route path="edit" element={<EditProfilePage />} />
-        <Route path="categories" element={<CategoriesPage />} />
+        <Route path="categories" element={<Navigate to="favorites" replace />} />
+        <Route path="categories/:categoryId" element={<CategoriesPage />} />
       </Route>
     </Routes>
   );

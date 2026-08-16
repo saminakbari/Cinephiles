@@ -1,14 +1,23 @@
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import './MovieDetail.css'
 import { getCurrentUser } from '../utils/auth'
 import { getReview, saveReview } from '../utils/reviews'
+import { FAVORITES_ID, getCategoriesForMovie, toggleMovieInCategory } from '../utils/categories'
+import SaveToCategory from '../components/SaveToCategory'
+import { BackArrowIcon, HeartIcon, StarIcon } from '../components/icons'
 
 const OMDB_URL = 'https://www.omdbapi.com/?apikey=trilogy&i='
 
+const TAGLINES = [
+  'Some stories stay with you long after the credits roll.',
+  'One more reason to turn the lights off and press play.',
+  'Worth the popcorn. Worth the two hours. Worth remembering.',
+  'A little magic, framed one shot at a time.',
+]
+
 export default function MovieDetail() {
   const { imdbId } = useParams()
-  const navigate = useNavigate()
   const user = getCurrentUser()
   const [movie, setMovie] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -18,6 +27,16 @@ export default function MovieDetail() {
   const [editing, setEditing] = useState(true)
   const [hasReview, setHasReview] = useState(false)
   const [savedMsg, setSavedMsg] = useState('')
+  const [memberOf, setMemberOf] = useState([])
+
+  const tagline = useMemo(
+    () => TAGLINES[Math.abs(hashCode(imdbId)) % TAGLINES.length],
+    [imdbId],
+  )
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [imdbId])
 
   useEffect(() => {
     setLoading(true)
@@ -56,6 +75,11 @@ export default function MovieDetail() {
     setSavedMsg('')
   }, [imdbId, user?.username])
 
+  useEffect(() => {
+    if (!user) return
+    setMemberOf(getCategoriesForMovie(user.username, imdbId))
+  }, [user, imdbId])
+
   function handleSaveReview(e) {
     e.preventDefault()
     if (!user || rating < 1 || rating > 5) return
@@ -65,47 +89,142 @@ export default function MovieDetail() {
     setSavedMsg('Review saved')
   }
 
+  function movieForCategory() {
+    return {
+      imdbId,
+      title: movie?.Title,
+      poster: movie?.Poster !== 'N/A' ? movie?.Poster : '',
+      year: movie?.Year,
+      imdbRating: Number(movie?.imdbRating) || null,
+    }
+  }
+
+  function handleToggleFavorite() {
+    if (!user || !movie) return
+    toggleMovieInCategory(user.username, FAVORITES_ID, movieForCategory())
+    setMemberOf(getCategoriesForMovie(user.username, imdbId))
+  }
+
+  const isFavorite = memberOf.includes(FAVORITES_ID)
+  const genres = movie?.Genre && movie.Genre !== 'N/A' ? movie.Genre.split(',').map((g) => g.trim()) : []
+
   return (
     <div className="movie-detail">
-      <button type="button" className="back-btn" onClick={() => navigate('/movies')}>
-        ← Back to movies
-      </button>
-
       {loading && <p className="detail-status">Loading details…</p>}
-      {error && <p className="detail-status detail-error">{error}</p>}
+      {error && (
+        <div className="detail-status-wrap">
+          <p className="detail-status detail-error">{error}</p>
+          <Link to="/movies" className="back-btn">
+            <BackArrowIcon className="back-btn__icon" /> Back to movies
+          </Link>
+        </div>
+      )}
 
       {!loading && !error && movie && (
-        <div className="detail-content">
-          {movie.Poster !== 'N/A' && (
-            <img
-              className="detail-poster"
-              src={movie.Poster}
-              alt={movie.Title}
-              referrerPolicy="no-referrer"
-            />
-          )}
-          <div className="detail-info">
-            <h1>{movie.Title}</h1>
-            <p className="detail-meta">
-              {movie.Year} · {movie.Runtime} · {movie.Rated}
-            </p>
-            <p className="detail-rating">IMDb {movie.imdbRating}/10</p>
-            <p><strong>Genre:</strong> {movie.Genre}</p>
-            <p><strong>Director:</strong> {movie.Director}</p>
-            <p><strong>Actors:</strong> {movie.Actors}</p>
-            <p className="detail-plot">{movie.Plot}</p>
-            <a
-              className="imdb-link"
-              href={`https://www.imdb.com/title/${imdbId}/`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              View on IMDb
-            </a>
+        <>
+          <div className="detail-hero">
+            <div className="detail-hero__bg">
+              {movie.Poster !== 'N/A' && (
+                <div
+                  className="detail-hero__backdrop"
+                  style={{ backgroundImage: `url(${movie.Poster})` }}
+                  aria-hidden="true"
+                />
+              )}
+              <div className="detail-hero__scrim" aria-hidden="true" />
+            </div>
+
+            <Link to="/movies" className="back-btn back-btn--floating">
+              <BackArrowIcon className="back-btn__icon" /> Back to movies
+            </Link>
+
+            <div className="detail-hero__content">
+              <div className="detail-poster-frame">
+                {movie.Poster !== 'N/A' ? (
+                  <img
+                    className="detail-poster"
+                    src={movie.Poster}
+                    alt={movie.Title}
+                    referrerPolicy="no-referrer"
+                  />
+                ) : (
+                  <div className="detail-poster detail-poster--placeholder">No poster</div>
+                )}
+                {movie.imdbRating && movie.imdbRating !== 'N/A' && (
+                  <div className="detail-rating-disc">
+                    <StarIcon filled className="detail-rating-disc__icon" />
+                    <span>{movie.imdbRating}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="detail-hero__info">
+                {genres.length > 0 && (
+                  <div className="detail-genre-row">
+                    {genres.map((g) => (
+                      <span key={g} className="detail-genre-pill">{g}</span>
+                    ))}
+                  </div>
+                )}
+
+                <h1>{movie.Title}</h1>
+                <p className="detail-tagline">“{tagline}”</p>
+
+                <p className="detail-meta-row">
+                  <span>{movie.Year}</span>
+                  <span className="detail-meta-dot">·</span>
+                  <span>{movie.Runtime}</span>
+                  <span className="detail-meta-dot">·</span>
+                  <span className="detail-meta-badge">{movie.Rated}</span>
+                </p>
+
+                {user && (
+                  <div className="detail-hero__actions">
+                    <button
+                      type="button"
+                      className={`favorite-btn ${isFavorite ? 'is-active' : ''}`}
+                      onClick={handleToggleFavorite}
+                      aria-pressed={isFavorite}
+                    >
+                      <HeartIcon filled={isFavorite} className="favorite-btn__icon" />
+                      {isFavorite ? 'In favorites' : 'Add to favorites'}
+                    </button>
+                    <SaveToCategory
+                      username={user.username}
+                      movie={movieForCategory()}
+                      memberOf={memberOf}
+                      onChange={() => setMemberOf(getCategoriesForMovie(user.username, imdbId))}
+                    />
+                  </div>
+                )}
+
+                <a
+                  className="imdb-link"
+                  href={`https://www.imdb.com/title/${imdbId}/`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View on IMDb ↗
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="detail-body">
+            <section className="detail-card">
+              <h2 className="detail-card__eyebrow">Synopsis</h2>
+              <p className="detail-plot">{movie.Plot}</p>
+            </section>
+
+            <section className="detail-card">
+              <h2 className="detail-card__eyebrow">Cast &amp; crew</h2>
+              <p><strong>Director</strong><span>{movie.Director}</span></p>
+              <p><strong>Actors</strong><span>{movie.Actors}</span></p>
+            </section>
 
             {user && (
-              <section className="review-section">
-                <h2>Your rating & review</h2>
+              <section className="detail-card review-card">
+                <h2 className="detail-card__eyebrow">Your rating &amp; review</h2>
 
                 {!editing && hasReview ? (
                   <div className="review-display">
@@ -173,8 +292,17 @@ export default function MovieDetail() {
               </section>
             )}
           </div>
-        </div>
+        </>
       )}
     </div>
   )
+}
+
+function hashCode(str) {
+  let hash = 0
+  for (let i = 0; i < String(str).length; i += 1) {
+    hash = (hash << 5) - hash + String(str).charCodeAt(i)
+    hash |= 0
+  }
+  return hash
 }

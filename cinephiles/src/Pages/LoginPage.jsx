@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import './AuthPage.css'
 import LOGO from '../assets/logo.svg'
 import { setSession, verifyLogin } from '../utils/auth'
+import { BackArrowIcon } from '../components/icons'
 
 function EyeIcon({ open }) {
   return (
@@ -66,9 +67,9 @@ export default function LoginPage() {
           ))}
         </div>
         <div className="auth-card__header">
-          <Link to="/" className="auth-back" aria-label="Back to home">
-            ←
-          </Link>
+          <button type="button" className="back-btn back-btn--floating" onClick={() => navigate('/')}>
+            <BackArrowIcon className="back-btn__icon" /> Back to Home
+          </button>
         </div>
         <div className="auth-card__body">
           <img src={LOGO} alt="Cinephiles" className="auth-card__logo" />
